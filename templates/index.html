@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="https://unpkg.com/primitive-ui/dist/css/main.css" />
+</head>
+<body>
+<h1>Мои задачи:</h1>
+<ul>
+    {% for m in menu%}
+    <li>
+        <h3>{{ m[0] }}</h3>
+        <p>{{ m[1] }}</p>
+        <ul>
+            <li>{{ m[2] }}</li>
+            <li>{{ m[3] }}</li>
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
