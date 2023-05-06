@@ -27,10 +27,10 @@ class DataBaseInteractor:
         except Exception as e:
             raise ConnectionError(f'Не удалось получить данные из БД. Ошибка:{e}')
 
-    def add_to_database(self, title: str, contents: str, datetime: str, completed: bool) -> None:
+    def add_to_database(self, title: str, contents: str, dt: str, completed: str) -> None:
         try:
             with sqlite3.connect(self.db_name) as con:
                 cur = con.cursor()
-                cur.execute("""INSERT INTO tasks VALUES (?, ?, ?, ?)""", (title, contents, datetime, completed))
+                cur.execute("""INSERT INTO tasks VALUES (?, ?, ?, ?)""", (title, contents, dt, completed))
         except Exception as e:
             raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')
