@@ -45,7 +45,7 @@ class DataBaseInteractor:
                 cur.execute(query, (task_id,))
                 con.commit()
         except Exception as e:
-            raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')
+            raise ConnectionError(f'Не удалось изменить данные в БД. Ошибка: {e}')
 
     def delete_task(self, task_id):
         try:
@@ -55,4 +55,4 @@ class DataBaseInteractor:
                 cur.execute(query, (task_id,))
                 con.commit()
         except Exception as e:
-            raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')
+            raise ConnectionError(f'Не удалось изменить данные в БД. Ошибка: {e}')
