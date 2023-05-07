@@ -37,11 +37,21 @@ class DataBaseInteractor:
         except Exception as e:
             raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')
 
-    def change_task_status(self, task_id: int):
+    def change_task_status(self, task_id):
         try:
             with sqlite3.connect(self._db_name) as con:
                 cur = con.cursor()
                 query = "UPDATE tasks SET completed = 'Выполнено' WHERE id = ?"
+                cur.execute(query, (task_id,))
+                con.commit()
+        except Exception as e:
+            raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')
+
+    def delete_task(self, task_id):
+        try:
+            with sqlite3.connect(self._db_name) as con:
+                cur = con.cursor()
+                query = "DELETE FROM tasks WHERE id = ?"
                 cur.execute(query, (task_id,))
                 con.commit()
         except Exception as e:

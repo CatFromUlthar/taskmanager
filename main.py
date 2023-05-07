@@ -22,6 +22,10 @@ def index():
         task_id = request.form['complete']
         interactor.change_task_status(task_id)
         return redirect('/')
+    elif request.method == 'POST' and 'delete' in request.form:
+        task_id = request.form['delete']
+        interactor.delete_task(task_id)
+        return redirect('/')
     else:
         return render_template('index.html', menu=interactor.get_from_database())
 
