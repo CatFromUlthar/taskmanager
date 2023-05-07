@@ -7,10 +7,16 @@ app = Flask(__name__, static_url_path='/static')
 app.secret_key = secrets.token_hex(16)
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/', methods=['GET'])
+def main_page():
     interactor = DataBaseInteractor('tasks.db')
-    if request.method == 'POST' and 'add' in request.form:
+    return render_template('index.html', menu=interactor.get_from_database())
+
+
+@app.route('/', methods=['POST'])
+def task_interaction():
+    interactor = DataBaseInteractor('tasks.db')
+    if 'add' in request.form:
         title = request.form['title']
         contents = request.form['contents']
         dt = datetime.now().__str__()[0:-7]
@@ -18,16 +24,14 @@ def index():
         interactor.add_to_database(title, contents, dt, completed)
         flash('Задача добавлена', 'success')
         return redirect('/')
-    elif request.method == 'POST' and 'complete' in request.form:
+    elif 'complete' in request.form:
         task_id = request.form['complete']
         interactor.change_task_status(task_id)
         return redirect('/')
-    elif request.method == 'POST' and 'delete' in request.form:
+    elif 'delete' in request.form:
         task_id = request.form['delete']
         interactor.delete_task(task_id)
         return redirect('/')
-    else:
-        return render_template('index.html', menu=interactor.get_from_database())
 
 
 if __name__ == '__main__':
