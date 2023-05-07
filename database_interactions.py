@@ -4,11 +4,12 @@ import sqlite3
 class DataBaseInteractor:
 
     def __init__(self, db_name):
-        self.db_name = db_name
+        self._db_name = db_name
         try:
-            with sqlite3.connect(self.db_name) as con:
+            with sqlite3.connect(self._db_name) as con:
                 cur = con.cursor()
                 cur.execute("""CREATE TABLE IF NOT EXISTS tasks (
+                   id INTEGER PRIMARY KEY AUTOINCREMENT,
                    title TEXT,
                    contents TEXT,
                    datetime TEXT,
@@ -19,7 +20,7 @@ class DataBaseInteractor:
 
     def get_from_database(self) -> list:
         try:
-            with sqlite3.connect(self.db_name) as con:
+            with sqlite3.connect(self._db_name) as con:
                 cur = con.cursor()
                 cur.execute("""SELECT * FROM tasks""")
                 res = cur.fetchall()
@@ -29,8 +30,19 @@ class DataBaseInteractor:
 
     def add_to_database(self, title: str, contents: str, dt: str, completed: str) -> None:
         try:
-            with sqlite3.connect(self.db_name) as con:
+            with sqlite3.connect(self._db_name) as con:
                 cur = con.cursor()
-                cur.execute("""INSERT INTO tasks VALUES (?, ?, ?, ?)""", (title, contents, dt, completed))
+                cur.execute("""INSERT INTO tasks (title, contents, datetime, completed) \
+                VALUES (?, ?, ?, ?)""", (title, contents, dt, completed))
+        except Exception as e:
+            raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')
+
+    def change_task_status(self, task_id: int):
+        try:
+            with sqlite3.connect(self._db_name) as con:
+                cur = con.cursor()
+                query = "UPDATE tasks SET completed = 'Выполнено' WHERE id = ?"
+                cur.execute(query, (task_id,))
+                con.commit()
         except Exception as e:
             raise ConnectionError(f'Не удалось записать данные в БД. Ошибка: {e}')

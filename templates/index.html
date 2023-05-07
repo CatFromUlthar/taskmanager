@@ -19,12 +19,17 @@
 <ul>
     {% for m in menu%}
     <li>
-        <h3>{{ m[0] }}</h3>
-        <p>{{ m[1] }}</p>
+        <h3>{{ m[1] }}</h3>
+        <p>{{ m[2] }}</p>
         <ul>
-            <li>{{ m[2] }}</li>
             <li>{{ m[3] }}</li>
+            <li>{{ m[4] }}</li>
         </ul>
+        <form action="/" method="POST">
+        <input type="hidden" name="complete" value="{{ m[0] }}">
+            <button type="submit">Выполнено</button>
+        </form>
+
     </li>
     {% endfor %}
 </ul>
@@ -37,7 +42,7 @@
     <input type="text"  id="title" name="title"><br><br>
 <p><label for="contents">Задача: </label><br>
     <textarea name="contents" id="contents"></textarea><br><br>
-<input type="submit" value="Добавить задачу">
+<input type="submit" value="Добавить задачу" name="add">
 </form>
 </body>
 </html>
